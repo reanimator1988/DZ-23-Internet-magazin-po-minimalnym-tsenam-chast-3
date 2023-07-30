@@ -1,0 +1,165 @@
+body {
+	padding-bottom: 100px;
+}
+
+h1 {
+	font-size: 43px;
+	text-align: center;
+	margin: 0;
+	padding-top: 25px;
+}
+
+.container {
+	min-height: 700px;
+}
+
+.root-nav {
+	margin: 110px 0 0 100px;
+	width: 160px;
+}
+
+.root-nav li {
+	position: relative;
+	list-style-type: none;
+	background: #574f4f;
+	width: 180px;
+}
+
+.root-nav a,
+.root-nav span {
+	text-decoration: none;
+	display: block;
+	padding: 5px 10px;
+	color: floralwhite;
+	line-height: 30px;
+	width: 162px;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+.root-nav ul {
+	display: none;
+	position: absolute;
+	right: -150px;
+	top: 0;
+	width: 150px;
+}
+
+ul.sub-menu-active {
+	display: block;
+}
+
+.root-nav div {
+	position: relative;
+	padding: 10px 10px;
+	width: 300px;
+	background: #574f4f;
+}
+
+.root-nav h2 {
+	text-align: center;
+	text-decoration-line: underline;
+	font-weight: bold;
+	margin: 0;
+	color: #FA8072;
+}
+
+h3 {
+	text-align: center;
+	color: white;
+}
+
+.root-nav p {
+	text-align: center;
+	font-size: 18px;
+	color: white;
+}
+
+.root-nav button {
+	border-radius: 100px;
+	width: 115px;
+	height: 50px;
+	cursor: pointer;
+	background: #9400D3;
+	color: white;
+	border: none;
+	font-size: 17px;
+	display: block;
+	margin: 0 auto;
+}
+
+.order-popup {
+	position: relative;
+	background-color: #574f4f;
+	color: white;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 35%;
+}
+
+.information {
+	position: relative;
+	background-color: #574f4f;
+	color: white;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 35%;
+}
+
+form button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+}
+
+#my-orders-button {
+	margin-top: 50px;
+	background-color: #4CAF50;
+	width: 120px;
+	height: 35px;
+	cursor: pointer;
+	color: white;
+	border: navajowhite;
+	margin-left: 140px;
+}
+
+#okButton {
+	display: block;
+	margin: 0 auto;
+	background-color: #4CAF50;
+	color: wheat;
+	width: 115px;
+	height: 35px;
+	border: none;
+	cursor: pointer;
+}
+
+.order-item {
+	padding-left: 20px;
+	background-color: #58f4ff;
+	font-size: 18px;
+	width: 20%;
+	border: 1px solid black;
+	margin-top: 10px;
+	color: black;
+	margin-left: 140px;
+	font-weight: bold;
+}
+
+.delete-button {
+	display: block;
+	margin: 0 auto;
+	background-color: red;
+	color: white;
+	height: 30px;
+	width: 100px;
+	cursor: pointer;
+}
+
+#orders-list {
+	flex-direction: column;
+}
