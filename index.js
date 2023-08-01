@@ -61,6 +61,7 @@ function showOrderForm(event) {
     if (isOrderFormOpen) {
         return;
     }
+    closeAllSubMenu();
 
     isOrderFormOpen = true;
     const targetLi = event.target.closest('li');
@@ -208,18 +209,31 @@ function submitOrder(event) {
 }
 
 const myOrdersButton = document.getElementById("my-orders-button");
-myOrdersButton.addEventListener("click", showMyOrders);
+const rootNav = document.querySelector(".root-nav");
+const ordersListContainer = document.getElementById("orders-list");
+let isMyOrdersMenuOpen = false;
+
+myOrdersButton.addEventListener("click", toggleMyOrdersMenu);
+
+function toggleMyOrdersMenu() {
+    if (isMyOrdersMenuOpen) {
+        rootNav.style.display = "block";
+        ordersListContainer.style.display = "none";
+    } else {
+        rootNav.style.display = "none";
+        showMyOrders();
+    }
+
+    isMyOrdersMenuOpen = !isMyOrdersMenuOpen;
+}
 
 function showMyOrders() {
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
     const ordersListContainer = document.getElementById("orders-list");
-    ordersListContainer.style.display = "none";
-
     ordersListContainer.innerHTML = "";
 
     if (orders.length === 0) {
         ordersListContainer.innerHTML = "<p>Немає збережених замовлень.</p>";
-        ordersListContainer.style.display = "flex";
         return;
     }
 
@@ -236,6 +250,7 @@ function showMyOrders() {
             <p class="order-info">Кількість: ${order.quantity} шт.</p>
             <p class="order-info">Загальна вартість: ${totalPrice.toFixed(2)} грн.</p>
             <button class="delete-button" data-index="${index}">Видалити</button>
+            <button class="details-button" data-index="${index}">Подробнее</button>
         `;
         ordersListContainer.appendChild(orderElement);
     });
@@ -243,9 +258,13 @@ function showMyOrders() {
     ordersListContainer.style.display = "flex";
 
     const deleteButtons = document.querySelectorAll(".delete-button");
-
     deleteButtons.forEach((button) => {
         button.addEventListener("click", deleteOrder);
+    });
+
+    const detailsButtons = document.querySelectorAll(".details-button");
+    detailsButtons.forEach((button) => {
+        button.addEventListener("click", showOrderDetails);
     });
 }
 
@@ -263,6 +282,47 @@ function deleteOrder(event) {
         ordersListContainer.removeChild(orderItem);
         showMyOrders();
     }
+}
+
+function showOrderDetails(event) {
+    const index = event.target.dataset.index;
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const order = orders[index];
+
+    const totalPrice = calculateTotalPrice(parseFloat(order.quantity), parseFloat(order.price));
+
+    const orderInfoPopup = document.createElement('div');
+    orderInfoPopup.classList.add('information');
+
+    orderInfoPopup.innerHTML = `
+        <p class="order-info">ІНФОРМАЦІЯ ПРО ЗАМОВЛЕННЯ:</p>
+        <p class="order-info">ПІБ покупця: ${order.name}</p>
+        <p class="order-info">Місто: ${order.city}</p>
+        <p class="order-info">Склад Нової пошти для надсилання: ${order.postOffice}</p>
+        <p class="order-info">Спосіб оплати: ${order.payment}</p>
+        <p class="order-info">Кількість продукції: ${order.quantity}</p>
+        <p class="order-info">Ціна товару: ${order.price}</p>
+        <p class="order-info">Сума: ${totalPrice.toFixed(2)}</p>
+        <p class="order-info">Коментар: ${order.comment}</p>
+        <p class="order-info">Дата: ${order.date}</p>
+        <button id="okButton">ОК</button>
+    `;
+
+    const orderInfoWrapper = document.createElement('div');
+    orderInfoWrapper.classList.add('order-info-wrapper');
+    orderInfoWrapper.appendChild(orderInfoPopup);
+
+    const orderItem = event.target.closest(".order-item");
+    orderItem.appendChild(orderInfoWrapper);
+
+    const okButton = orderInfoPopup.querySelector('#okButton');
+    okButton.addEventListener('click', () => {
+        orderItem.removeChild(orderInfoWrapper);
+    });
+
+    orderInfoWrapper.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
 }
 
 function saveOrderToLocalStorage(order) {
