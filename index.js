@@ -229,31 +229,29 @@ function toggleMyOrdersMenu() {
 
 function showMyOrders() {
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const ordersListContainer = document.getElementById("orders-list");
     ordersListContainer.innerHTML = "";
 
     if (orders.length === 0) {
         ordersListContainer.innerHTML = "<p>Немає збережених замовлень.</p>";
-        return;
+    } else {
+        orders.forEach((order, index) => {
+            const orderElement = document.createElement("div");
+            orderElement.classList.add("order-item");
+
+            const totalPrice = calculateTotalPrice(parseFloat(order.quantity), parseFloat(order.price));
+
+            orderElement.innerHTML = `
+                <p class="order-info">ПІБ покупця: ${order.name}</p>
+                <p class="order-info">Дата: ${order.date}</p>
+                <p class="order-info">Ціна: ${order.price} грн.</p>
+                <p class="order-info">Кількість: ${order.quantity} шт.</p>
+                <p class="order-info">Загальна вартість: ${totalPrice.toFixed(2)} грн.</p>
+                <button class="delete-button" data-index="${index}">Видалити</button>
+                <button class="details-button" data-index="${index}">Подробнее</button>
+            `;
+            ordersListContainer.appendChild(orderElement);
+        });
     }
-
-    orders.forEach((order, index) => {
-        const orderElement = document.createElement("div");
-        orderElement.classList.add("order-item");
-
-        const totalPrice = calculateTotalPrice(parseFloat(order.quantity), parseFloat(order.price));
-
-        orderElement.innerHTML = `
-            <p class="order-info">ПІБ покупця: ${order.name}</p>
-            <p class="order-info">Дата: ${order.date}</p>
-            <p class="order-info">Ціна: ${order.price} грн.</p>
-            <p class="order-info">Кількість: ${order.quantity} шт.</p>
-            <p class="order-info">Загальна вартість: ${totalPrice.toFixed(2)} грн.</p>
-            <button class="delete-button" data-index="${index}">Видалити</button>
-            <button class="details-button" data-index="${index}">Подробнее</button>
-        `;
-        ordersListContainer.appendChild(orderElement);
-    });
 
     ordersListContainer.style.display = "flex";
 
@@ -267,6 +265,7 @@ function showMyOrders() {
         button.addEventListener("click", showOrderDetails);
     });
 }
+
 
 function deleteOrder(event) {
     event.stopPropagation();
